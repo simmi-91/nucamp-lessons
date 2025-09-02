@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Matching game</title>
+    
+    <style>
+        img{
+            position: absolute;
+        }
+        .gamearea{
+            position: absolute;
+            width: 500px;
+            height: 500px;
+        }
+        #rightSide{
+            left: 500px;
+            border-left: 1px solid;
+        }
+
+        .floatRight{
+            float: right;
+        }
+    </style>
+</head>
+<body onload="generateFaces()">
+
+    <h1>Matching Game</h1>
+    <span class="floatRight">
+        <span>Level:<span id="lvl">0</span></span>
+        //
+        <span>
+            Difficulty
+            <select id="difficulty">
+                <option value="5" >Easy</option>
+                <option value="15" >Hard</option>
+            </select>
+        </span>
+    </span>
+    <p>Click on the different face to advance to the next level. Click anywhere else and it's game over!</p>
+
+    <div id="leftSide" class="gamearea"></div>
+    <div id="rightSide" class="gamearea"></div>
+
+    <script>
+        let levelCounter = 0;
+        let numberOfFaces = 5;
+
+        const theLeftSide = document.getElementById("leftSide");
+        const theRightSide = document.getElementById("rightSide");
+
+        document.getElementById('difficulty').addEventListener('change', setDifficulty);
+
+        function generateFaces() {
+            while (theLeftSide.firstChild) {
+                theLeftSide.removeChild(theLeftSide.lastChild);
+            }
+            while (theRightSide.firstChild) {
+                theRightSide.removeChild(theRightSide.lastChild);
+            }
+
+            for (let i = 0; i < numberOfFaces; i++) {
+                const randomTop = Math.floor(  Math.random() * 400  ) + 1;
+                const randomLeft = Math.floor(  Math.random() * 400  ) + 1;
+
+                let face = document.createElement('img');
+                face.src = "images/smile.png";
+                face.style.top = randomTop + 'px';
+                face.style.left = randomLeft + 'px';
+
+                theLeftSide.appendChild(face);
+            }
+
+            const leftSideImages = theLeftSide.cloneNode(true);
+            leftSideImages.removeChild(leftSideImages.lastChild);
+            theRightSide.appendChild(leftSideImages);
+
+            theLeftSide.lastChild.addEventListener('click', nextLevel);
+            //document.body.addEventListener('click', gameOver);
+            theLeftSide.addEventListener('click', gameOver);
+            theRightSide.addEventListener('click', gameOver);
+        }
+
+        function nextLevel(event) {
+            levelCounter++;
+            document.getElementById("lvl").innerText = levelCounter;
+
+            event.stopPropagation();
+            numberOfFaces += 5;
+            generateFaces();
+        }
+
+        function gameOver() {
+            theLeftSide.lastChild.removeEventListener('click',nextLevel);
+            theLeftSide.removeEventListener('click', gameOver);
+            theRightSide.removeEventListener('click', gameOver);
+
+            alert("Game Over! You reached level " + (levelCounter) );
+
+            let btn = document.createElement('button');
+            btn.innerText = "Play Again?";
+            btn.onclick = restart;
+
+            const backdrop = document.createElement('div');
+            backdrop.style.position = 'fixed';
+            backdrop.style.top = '0';
+            backdrop.style.left = '0';
+            backdrop.style.width = '100%';
+            backdrop.style.height = '100%';
+            backdrop.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            document.body.appendChild(backdrop);
+
+            btn.style.position = 'fixed';
+            btn.style.top = '300px';
+            btn.style.left = '50%';
+            btn.style.transform = 'translate(-50%, -50%)';
+            btn.style.fontSize = '20px'; 
+            btn.style.padding = '10px 20px'; 
+            document.body.appendChild(btn);
+        }
+        
+        function setDifficulty() {
+            const difficulty = document.getElementById('difficulty').value;
+            numberOfFaces = parseInt(difficulty); 
+            restart();
+        }
+
+        function restart() {
+            const btn = document.querySelector('button');
+            const backdrop = document.querySelector('div[style*="position: fixed"]');
+
+            if (btn) {
+                document.body.removeChild(btn);
+            }
+            if (backdrop) {
+                document.body.removeChild(backdrop);
+            }
+            
+            levelCounter = 0;
+            generateFaces();
+        }
+        
+    </script>
+</body>
+</html>
