@@ -17,15 +17,33 @@
         function buyTicket() {
             const attractionType = prompt('Which attraction do you want to visit: type "wave" for wave pool, "water" for waterslide, or "river" for lazy river?');
             const userHeight = prompt('What is your height in inches?');
+            const withAdult = prompt('Are you in company of an adult?');
 
-            console.log("User's selected attraction is " + attractionType);
-            console.log("User's height is " + userHeight);
+            const formattedAttractionType = attractionType.trim().toLowerCase();
+            const formattedUserHeight = parseInt(userHeight.trim());
+            const formattedWithAdult = withAdult.trim().toLowerCase();
+            
+            console.log("User's selected attraction is " + formattedAttractionType);
+            console.log("User's height is " + formattedUserHeight);
+            
+            const boolAdult = checkAdult(formattedWithAdult);
+            console.log(boolAdult ? 'User brought adult.' : 'No adult present.');
 
-            const isAllowed = checkHeight(attractionType, userHeight);
-            alert(isAllowed ? 'You are allowed to enter the ' + attractionType + ' attraction!' : 'Sorry, you do not meet the height requirement for the ' + attractionType + ' attraction.');
+            const isAllowed = checkHeight(formattedAttractionType, formattedUserHeight, boolAdult);
+            alert(isAllowed ? 'You are allowed to enter the ' + formattedAttractionType + ' attraction!' : 'Sorry, you do not meet the height requirement for the ' + formattedAttractionType + ' attraction.');
         }
 
-        function checkHeight(attraction, height) {
+        function checkAdult(withAdult) {
+            if ((withAdult === 'yes') || (withAdult === 'y')) {
+                return true;
+            }
+            return false;
+        }
+        function checkHeight(attraction, height, boolAdult) {            
+            if ( boolAdult === true && height > 42) {
+                return true;
+            }
+
             if ( attraction === 'wave') {
                 return (height >= WAVE_POOL_MIN_HEIGHT);
             }

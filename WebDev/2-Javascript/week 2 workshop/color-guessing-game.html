@@ -25,7 +25,7 @@
                 numTries++;
 
                 if ( guess === null ) {
-                    alert("Game exited.");
+                    //alert("Game exited.");
                     return;
                 }
                 correct = checkGuess(guess,target);
@@ -40,20 +40,20 @@
             let correct = false;
 
             if( COLORS_ARRAY.includes(guess) ){
-                const guessIndex = COLORS_ARRAY.indexOf(guess);
-                const targetIndex = COLORS_ARRAY.indexOf(target);
-                if (guessIndex > targetIndex) {
-                    alert("Your guess is too high.");
+                //const guessIndex = COLORS_ARRAY.indexOf(guess);
+                //const targetIndex = COLORS_ARRAY.indexOf(target);
+                if (guess.toLowerCase() > target.toLowerCase()) {
+                    alert("Your guess is lower.");
                 }
-                else if (guessIndex < targetIndex) {
-                    alert("Your guess is too low.");
+                else if (guess.toLowerCase() < target.toLowerCase()) {
+                    alert("Your guess is higher.");
                 }
                 else{
                     correct = true;
                 }
             }
             else{
-                alert("This color is not in the list. \n" + COLORS_ARRAY);
+                alert("This color is not in the list. \nAvailable choices: " + COLORS_ARRAY.join(', '));
             }
 
             return correct;
