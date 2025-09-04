@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags always come first -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+        <link rel="stylesheet" href="src/css/styles.scss" />
+
+        <title>Your local weather app</title>
+
+        <style>
+            .test {
+                border: thin solid black;
+                background-color: rgb(142, 175, 132);
+                height: 300px;
+                margin: 5px 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- navbar -->
+        <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+            <!-- 
+            display name of active city
+            navigate to sections
+            select city
+            -->
+            <div class="container-fluid">
+                <div id="active-city" class="navbar-brand px-4">Navbar</div>
+
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse flex-grow-0" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#today">Today</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#forecast">Forecast</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#weatherdetails">Weather deatails</a>
+                        </li>
+
+                        <li class="nav-item align-content-center">
+                            <select id="city-selector" class="form-select form-select-sm">
+                                <option value="0" selected>Select city</option>
+                                <option value="Oslo">Oslo</option>
+                                <option value="Bergen">Bergen</option>
+                                <option value="New York">New York</option>
+                                <option value="Los Angeles">Los Angeles</option>
+                                <option value="London">London</option>
+                                <option value="Edinburgh">Edinburgh</option>
+                                <option value="Madrid">Madrid</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- main content -->
+        <main class="container">
+            <!-- 
+            display current weather
+            forecast
+            extra weatherinfo on large screen
+          -->
+
+            <!-- current weather -->
+            <section id="today" class="row row-content mt-4">
+                <div class="row">
+                    <div class="col text-center">
+                        <span id="weather-icon"></span>
+                    </div>
+                    <div class="col text-center align-self-center">
+                        <div id="weather-temperature" class="fs-1 fw-bold"></div>
+                        <div id="weather-description" class="fs-4"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- closest forecast -->
+            <section id="closestForecast" class="row row-content mt-4 gap-1"></section>
+
+            <!-- weatherdetails -->
+            <section id="weatherdetails" class="row row-content mt-4 gap-1">
+                <div class="test">weatherdetails</div>
+            </section>
+
+            <!-- daily forecast -->
+            <section id="dailyForecast" class="row row-content mt-4">
+                <div class="test">dailyForecast</div>
+            </section>
+        </main>
+
+        <!-- footer -->
+        <footer></footer>
+
+        <!-- Bootstrap JavaScript plugins -->
+        <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script src="src/js/weather.js" type="module"></script>
+    </body>
+</html>
