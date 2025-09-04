@@ -28,17 +28,25 @@ async function fetchWeather() {
 
 function displayWeather(weatherData) {
     // MAIN WEATHER
-    const iconContiner = document.getElementById("weather-icon");
-    while (iconContiner.firstChild) {
-        iconContiner.removeChild(iconContiner.lastChild);
+    const iconContainer = document.getElementById("weather-icon");
+    while (iconContainer.firstChild) {
+        iconContainer.removeChild(iconContainer.lastChild);
     }
-    applyIcon(weatherData.weather[0].icon, iconContiner, 4);
+    applyIcon(weatherData.weather[0].icon, iconContainer, 4);
 
-    const temp = weatherData.main.temp;
-    document.getElementById("weather-temperature").innerHTML = `${temp} &#176;C`;
+    const temp = Math.round(weatherData.main.temp * 10) / 10;
+    document.getElementById("weather-temperature").innerHTML = `${temp}&#176;C`;
 
     const desc = weatherData.weather[0].description;
-    document.getElementById("weather-description").innerHTML = desc;
+    const feel = Math.round(weatherData.main.feels_like * 10) / 10;
+
+    let descriptionContainer = document.getElementById("weather-description");
+    while (descriptionContainer.firstChild) {
+        descriptionContainer.removeChild(descriptionContainer.lastChild);
+    }
+    descriptionContainer.appendChild(textElem("p", `${desc}, feels like ${feel}&#176;C`));
+
+    console.log(weatherData);
 
     // ADDITIONAL WEATHER INFO
     let weatherdetailsContainer = document.getElementById("weatherdetails");
@@ -47,11 +55,42 @@ function displayWeather(weatherData) {
     }
     const details = ["wind", "humidity", "pressure"];
     details.forEach((detail) => {
-        console.log(detail);
-        let detailElem = document.createElement("div");
-        detailElem.className = "weather-detail card col text-center";
-        detailElem.appendChild(document.createElement("b")).innerHTML =
-            detail.charAt(0).toUpperCase() + detail.slice(1);
+        let detailElem = document.createElement("span");
+        detailElem.className = "d-flex";
+        //detailElem.className = "weather-detail card col text-center";
+        //detailElem.appendChild(document.createElement("b")).innerHTML = detail.charAt(0).toUpperCase() + detail.slice(1);
+
+        let numberElem = document.createElement("span");
+        detailElem.className = "";
+
+        numberElem.appendChild(document.createElement("b")).innerHTML =
+            detail.charAt(0).toUpperCase() + detail.slice(1) + ": ";
+        if (detail === "wind") {
+            const dir = getWindDirection(weatherData.wind.deg);
+
+            let arrow = document.createElement("img");
+            arrow.src = "src/assets/images/arrow.svg";
+            arrow.style.width = "15px";
+            arrow.style.transform = `rotate(${weatherData.wind.deg}deg)`;
+            arrow.setAttribute("title", `Wind Direction is ${dir}`);
+
+            let windElem = document.createElement("span");
+            windElem.appendChild(textElem("span", `${weatherData.wind.speed} m/s`, "mx-1"));
+            windElem.appendChild(arrow);
+            numberElem.appendChild(windElem);
+
+            if (weatherData.wind.gust) {
+                numberElem.appendChild(
+                    textElem("span", `(${weatherData.wind.gust} gust)`, "mx-1 d-none d-lg-inline")
+                );
+            }
+        } else if (detail === "humidity") {
+            numberElem.appendChild(textElem("span", `${weatherData.main.humidity}%`));
+        } else if (detail === "pressure") {
+            numberElem.appendChild(textElem("span", `${weatherData.main.pressure}%`));
+        }
+        detailElem.appendChild(numberElem);
+
         weatherdetailsContainer.appendChild(detailElem);
     });
 
@@ -106,4 +145,63 @@ function applyIcon(icon, output, size) {
     let img = document.createElement("img");
     img.src = `https://openweathermap.org/img/wn/${icon}@${size}x.png`;
     output.appendChild(img);
+}
+
+function textElem(elem, text, classes) {
+    var newElem = document.createElement(elem);
+    newElem.innerHTML = text;
+    if (classes) {
+        newElem.className = classes;
+    }
+    return newElem;
+}
+
+function getWindDirection(degrees) {
+    const shortDir = [
+        "N",
+        "NNE",
+        "NE",
+        "ENE",
+        "E",
+        "ESE",
+        "SE",
+        "SSE",
+        "S",
+        "SSW",
+        "SW",
+        "WSW",
+        "W",
+        "WNW",
+        "NW",
+        "NNW",
+    ];
+    const directions = [
+        "North",
+        "North-Northeast",
+        "Northeast",
+        "East-Northeast",
+        "East",
+        "East-Southeast",
+        "Southeast",
+        "South-Southeast",
+        "South",
+        "South-Southwest",
+        "Southwest",
+        "West-Southwest",
+        "West",
+        "West-Northwest",
+        "Northwest",
+        "North-Northwest",
+    ];
+
+    // Ensure degrees are within 0-360
+    degrees = ((degrees % 360) + 360) % 360;
+
+    // Adjust for the starting point of North (centered around 0/360)
+    degrees += 11.25;
+
+    // Calculate the index for the directions array
+    const index = Math.floor(degrees / 22.5);
+
+    return directions[index];
 }
