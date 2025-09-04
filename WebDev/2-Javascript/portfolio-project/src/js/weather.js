@@ -20,7 +20,7 @@ async function fetchWeather() {
         let response = await fetch(url);
         let weatherData = await response.json();
         displayWeather(weatherData);
-        fetchClosestForecast(activeCity, weatherData.sys.country, 5);
+        fetchCurrentForecast(activeCity, weatherData.sys.country, 5);
     } catch (error) {
         console.error("Error fetching weather data: ", error);
     }
@@ -69,10 +69,11 @@ function displayWeather(weatherData) {
             const dir = getWindDirection(weatherData.wind.deg);
 
             let arrow = document.createElement("img");
-            arrow.src = "src/assets/images/arrow.svg";
+            arrow.src = "../images/arrow.svg";
             arrow.style.width = "15px";
             arrow.style.transform = `rotate(${weatherData.wind.deg}deg)`;
             arrow.setAttribute("title", `Wind Direction is ${dir}`);
+            arrow.setAttribute("alt", `${getWindDirection(weatherData.wind.deg, true)}`);
 
             let windElem = document.createElement("span");
             windElem.appendChild(textElem("span", `${weatherData.wind.speed} m/s`, "mx-1"));
@@ -99,21 +100,21 @@ function displayWeather(weatherData) {
     //document.getElementById("weather-wind").innerHTML = `Wind: ${wind} meter/sec`;
 }
 
-async function fetchClosestForecast(activeCity, country, count) {
+async function fetchCurrentForecast(activeCity, country, count) {
     const apiKey = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
     const url = `https://api.openweathermap.org/data/2.5/forecast/?q=${activeCity},${country}&cnt=${count}&appid=${apiKey}&units=metric`;
     try {
         let response = await fetch(url);
         let weatherData = await response.json();
-        displayClosestForecast(weatherData);
+        displayCurrentForecast(weatherData);
     } catch (error) {
         console.error("Error fetching weather data: ", error);
     }
 }
 
-function displayClosestForecast(weatherData) {
+function displayCurrentForecast(weatherData) {
     const forcast = weatherData.list;
-    const forecastContainer = document.getElementById("closestForecast");
+    const forecastContainer = document.getElementById("currentForecast");
     while (forecastContainer.firstChild) {
         forecastContainer.removeChild(forecastContainer.lastChild);
     }
@@ -156,7 +157,7 @@ function textElem(elem, text, classes) {
     return newElem;
 }
 
-function getWindDirection(degrees) {
+function getWindDirection(degrees, boolShort = false) {
     const shortDir = [
         "N",
         "NNE",
@@ -202,6 +203,8 @@ function getWindDirection(degrees) {
 
     // Calculate the index for the directions array
     const index = Math.floor(degrees / 22.5);
-
+    if (boolShort === true) {
+        return shortDir[index];
+    }
     return directions[index];
 }
