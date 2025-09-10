@@ -20,6 +20,7 @@ const UserLoginForm = () => {
             password: values.password,
         };
         dispatch(setCurrentUser(currentUser));
+        setLoginModalOpen(false);
     };
 
     return (
