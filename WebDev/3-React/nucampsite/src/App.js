@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { fetchCampsites } from "./features/campsites/campsitesSlice.js";
 import { fetchPartners } from "./features/partners/partnersSlice.js";
 import { fetchPromotions } from "./features/promotions/promotionsSlice.js";
+import { fetchComments } from "./features/comments/commentsSlice.js";
 
 import Header from "./components/Header.js";
 import Footer from "./components/Footer.js";
@@ -21,6 +22,7 @@ function App() {
         dispatch(fetchCampsites());
         dispatch(fetchPartners());
         dispatch(fetchPromotions());
+        dispatch(fetchComments());
     }, [dispatch]);
 
     return (
