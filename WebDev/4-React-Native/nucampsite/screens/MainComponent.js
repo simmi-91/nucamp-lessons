@@ -4,6 +4,8 @@ import Constants from "expo-constants";
 import DirectoryScreen from "./DirectoryScreen";
 import CampsiteInfoScreen from "./CampsiteInfoScreen";
 import HomeScreen from "./HomeScreen";
+import AboutScreen from "./AboutScreen";
+import ContactScreen from "./ContactScreen";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -23,6 +25,29 @@ const HomeNavigator = () => {
         </Stack.Navigator>
     );
 };
+
+const AboutNavigator = () => {
+    const Stack = createStackNavigator();
+    return (
+        <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen name="About" component={AboutScreen} />
+        </Stack.Navigator>
+    );
+};
+
+const ContactNavigator = () => {
+    const Stack = createStackNavigator();
+    return (
+        <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen
+                name="Contact"
+                component={ContactScreen}
+                options={{ title: "Contact Us" }}
+            />
+        </Stack.Navigator>
+    );
+};
+
 const DirectoryNavigator = () => {
     const Stack = createStackNavigator();
     return (
@@ -66,6 +91,24 @@ const Main = () => {
                     component={DirectoryNavigator}
                     options={{
                         title: "Campsite Directory",
+                        headerShown: false,
+                    }}
+                />
+
+                <Drawer.Screen
+                    name="AboutNav"
+                    component={AboutNavigator}
+                    options={{
+                        title: "About Us",
+                        headerShown: false,
+                    }}
+                />
+
+                <Drawer.Screen
+                    name="ContactNav"
+                    component={ContactNavigator}
+                    options={{
+                        title: "Contact Us",
                         headerShown: false,
                     }}
                 />
