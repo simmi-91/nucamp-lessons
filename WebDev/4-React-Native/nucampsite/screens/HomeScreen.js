@@ -7,7 +7,6 @@ import Loading from "../components/LoadingComponent";
 
 const FeaturedItem = (props) => {
     const { item } = props;
-    console.log(item);
 
     if (props.isLoading) {
         return <Loading />;
