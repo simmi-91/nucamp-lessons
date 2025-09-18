@@ -16,6 +16,13 @@ import {
 } from "@react-navigation/drawer";
 import logo from "../assets/images/logo.png";
 
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchPartners } from "../features/partners/partnersSlice";
+import { fetchCampsites } from "../features/campsites/campsitesSlice";
+import { fetchPromotions } from "../features/promotions/promotionsSlice";
+import { fetchComments } from "../features/comments/commentsSlice";
+
 const Drawer = createDrawerNavigator();
 
 const screenOptions = {
@@ -48,6 +55,7 @@ const HomeNavigator = () => {
 
 const AboutNavigator = () => {
     const Stack = createStackNavigator();
+
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen
@@ -70,12 +78,13 @@ const AboutNavigator = () => {
 
 const ContactNavigator = () => {
     const Stack = createStackNavigator();
+
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen
                 name="Contact"
                 component={ContactScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "Contact Us",
                     headerLeft: () => (
                         <Icon
@@ -85,7 +94,7 @@ const ContactNavigator = () => {
                             onPress={() => navigation.toggleDrawer()}
                         />
                     ),
-                }}
+                })}
             />
         </Stack.Navigator>
     );
@@ -98,17 +107,17 @@ const DirectoryNavigator = () => {
             <Stack.Screen
                 name="Directory"
                 component={DirectoryScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: "Campsite Directory",
                     headerLeft: () => (
                         <Icon
-                            name="address-card"
+                            name="list"
                             type="font-awesome"
                             iconStyle={styles.stackIcon}
                             onPress={() => navigation.toggleDrawer()}
                         />
                     ),
-                }}
+                })}
             />
             <Stack.Screen
                 name="CampsiteInfo"
@@ -128,7 +137,7 @@ const CustomDrawerContent = (props) => (
                 <Image source={logo} style={styles.drawerImage} />
             </View>
             <View style={{ flex: 2 }}>
-                <Text style={styles.drawerHeaderText}>NuCamp</Text>
+                <Text style={styles.drawerHeaderText}>Nucamp</Text>
             </View>
         </View>
         <DrawerItemList {...props} labelStyle={{ fontWeight: "bold" }} />
@@ -136,9 +145,21 @@ const CustomDrawerContent = (props) => (
 );
 
 const Main = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchCampsites());
+        dispatch(fetchPromotions());
+        dispatch(fetchPartners());
+        dispatch(fetchComments());
+    }, [dispatch]);
+
     return (
         <View
-            style={{ flex: 1, paddingTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight }}>
+            style={{
+                flex: 1,
+                paddingTop: Platform.OS === "ios" ? 0 : Constants.statusBarHeight,
+            }}>
             <Drawer.Navigator
                 initialRouteName="HomeNav"
                 drawerContent={CustomDrawerContent}
@@ -180,7 +201,6 @@ const Main = () => {
                         ),
                     }}
                 />
-
                 <Drawer.Screen
                     name="AboutNav"
                     component={AboutNavigator}
@@ -198,7 +218,6 @@ const Main = () => {
                         ),
                     }}
                 />
-
                 <Drawer.Screen
                     name="ContactNav"
                     component={ContactNavigator}
@@ -222,11 +241,6 @@ const Main = () => {
 };
 
 const styles = StyleSheet.create({
-    stackIcon: {
-        marginLeft: 10,
-        color: "#fff",
-        fontSize: 24,
-    },
     drawerHeader: {
         backgroundColor: "#5637DD",
         height: 140,
@@ -244,6 +258,11 @@ const styles = StyleSheet.create({
         margin: 10,
         height: 60,
         width: 60,
+    },
+    stackIcon: {
+        marginLeft: 10,
+        color: "#fff",
+        fontSize: 24,
     },
 });
 
