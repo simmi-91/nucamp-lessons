@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { View, FlatList, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 import { SwipeRow } from "react-native-swipe-list-view";
+import * as Animatable from "react-native-animatable";
 
 import Loading from "../components/LoadingComponent";
 import { baseUrl } from "../shared/baseUrl";
@@ -75,11 +76,13 @@ const FavoritesScreen = ({ navigation }) => {
     }
 
     return (
-        <FlatList
-            data={campsitesArray.filter((campsite) => favorites.includes(campsite.id))}
-            renderItem={renderFavoriteItem}
-            keyExtractor={(item) => item.id.toString()}
-        />
+        <Animatable.View animation="fadeInRightBig" duration={2000}>
+            <FlatList
+                data={campsitesArray.filter((campsite) => favorites.includes(campsite.id))}
+                renderItem={renderFavoriteItem}
+                keyExtractor={(item) => item.id.toString()}
+            />
+        </Animatable.View>
     );
 };
 
