@@ -4,7 +4,6 @@ import { commentsReducer } from "../features/comments/commentsSlice";
 import { partnersReducer } from "../features/partners/partnersSlice";
 import { promotionsReducer } from "../features/promotions/promotionsSlice";
 import { favoritesReducer } from "../features/favorites/favoritesSlice";
-
 import {
     persistStore,
     persistCombineReducers,
@@ -16,9 +15,12 @@ import {
     REGISTER,
 } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getDefaultTarget } from "expo/config";
 
-const config = { key: "root", storage: AsyncStorage, debug: true };
+const config = {
+    key: "root",
+    storage: AsyncStorage,
+    debug: true,
+};
 
 export const store = configureStore({
     reducer: persistCombineReducers(config, {
