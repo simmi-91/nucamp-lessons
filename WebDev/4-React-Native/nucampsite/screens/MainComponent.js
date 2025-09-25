@@ -1,29 +1,27 @@
-import { Platform, View, StyleSheet, Text, Image } from "react-native";
+import { Image, Platform, StyleSheet, Text, View } from "react-native";
 import Constants from "expo-constants";
-import { Icon } from "react-native-elements";
-
-import DirectoryScreen from "./DirectoryScreen";
 import CampsiteInfoScreen from "./CampsiteInfoScreen";
-import HomeScreen from "./HomeScreen";
-import AboutScreen from "./AboutScreen";
-import ContactScreen from "./ContactScreen";
-import ReservationScreen from "./ReservationScreen";
-import FavoritesScreen from "./FavoritesScreen";
-
+import DirectoryScreen from "./DirectoryScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
     createDrawerNavigator,
     DrawerContentScrollView,
     DrawerItemList,
 } from "@react-navigation/drawer";
+import HomeScreen from "./HomeScreen";
+import AboutScreen from "./AboutScreen";
+import ContactScreen from "./ContactScreen";
+import ReservationScreen from "./ReservationScreen";
+import { Icon } from "react-native-elements";
 import logo from "../assets/images/logo.png";
-
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchPartners } from "../features/partners/partnersSlice";
 import { fetchCampsites } from "../features/campsites/campsitesSlice";
 import { fetchPromotions } from "../features/promotions/promotionsSlice";
 import { fetchComments } from "../features/comments/commentsSlice";
+import FavoritesScreen from "./FavoritesScreen";
+import LoginScreen from "./LoginScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -128,7 +126,6 @@ const ReservationNavigator = () => {
 
 const FavoritesNavigator = () => {
     const Stack = createStackNavigator();
-
     return (
         <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen
@@ -139,6 +136,28 @@ const FavoritesNavigator = () => {
                     headerLeft: () => (
                         <Icon
                             name="heart"
+                            type="font-awesome"
+                            iconStyle={styles.stackIcon}
+                            onPress={() => navigation.toggleDrawer()}
+                        />
+                    ),
+                })}
+            />
+        </Stack.Navigator>
+    );
+};
+
+const LoginNavigator = () => {
+    const Stack = createStackNavigator();
+    return (
+        <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={({ navigation }) => ({
+                    headerLeft: () => (
+                        <Icon
+                            name="sign-in"
                             type="font-awesome"
                             iconStyle={styles.stackIcon}
                             onPress={() => navigation.toggleDrawer()}
@@ -218,6 +237,23 @@ const Main = () => {
                     headerShown: true,
                 }}>
                 <Drawer.Screen
+                    name="LoginNav"
+                    component={LoginNavigator}
+                    options={{
+                        title: "Login",
+                        headerShown: false,
+                        drawerIcon: ({ color }) => (
+                            <Icon
+                                name="sign-in"
+                                type="font-awesome"
+                                size={24}
+                                iconStyle={{ width: 24 }}
+                                color={color}
+                            />
+                        ),
+                    }}
+                />
+                <Drawer.Screen
                     name="HomeNav"
                     component={HomeNavigator}
                     options={{
@@ -269,10 +305,11 @@ const Main = () => {
                     }}
                 />
                 <Drawer.Screen
-                    name="Favorites"
+                    name="FavoritesNav"
                     component={FavoritesNavigator}
                     options={{
                         title: "My Favorites",
+                        headerShown: false,
                         drawerIcon: ({ color }) => (
                             <Icon
                                 name="heart"
