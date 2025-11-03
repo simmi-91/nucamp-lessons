@@ -1,3 +1,5 @@
 .env
 json-server/public
 *Zone.Identifier
+*server.key
+*server.cert
