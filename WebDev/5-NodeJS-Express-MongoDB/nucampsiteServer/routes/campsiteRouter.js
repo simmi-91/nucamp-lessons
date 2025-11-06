@@ -10,6 +10,7 @@ campsiteRouter
     .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
     .get(cors.cors, (req, res, next) => {
         Campsite.find()
+            .populate("comments.author")
             .then((campsite) => {
                 res.statusCode = 200;
                 res.setHeader("Content-Type", "application/json");
@@ -24,7 +25,6 @@ campsiteRouter
         (req, res, next) => {
             Campsite.create(req.body)
                 .then((campsite) => {
-                    //console.log("Campsite Created ", campsite);
                     res.statusCode = 200;
                     res.setHeader("Content-Type", "application/json");
                     res.json(campsite);
@@ -56,6 +56,7 @@ campsiteRouter
     .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
     .get(cors.cors, (req, res, next) => {
         Campsite.findById(req.params.campsiteId)
+            .populate("comments.author")
             .then((campsite) => {
                 res.statusCode = 200;
                 res.setHeader("Content-Type", "application/json");
@@ -73,6 +74,7 @@ campsiteRouter
         authenticate.verifyAdmin,
         (req, res, next) => {
             Campsite.findByIdAndUpdate(req.params.campsiteId, { $set: req.body }, { new: true })
+                .populate("comments.author")
                 .then((campsite) => {
                     res.statusCode = 200;
                     res.setHeader("Content-Type", "application/json");
@@ -101,6 +103,7 @@ campsiteRouter
     .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
     .get(cors.cors, (req, res, next) => {
         Campsite.findById(req.params.campsiteId)
+            .populate("comments.author")
             .then((campsite) => {
                 if (campsite) {
                     res.statusCode = 200;
@@ -116,6 +119,7 @@ campsiteRouter
     })
     .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Campsite.findById(req.params.campsiteId)
+            .populate("comments.author")
             .then((campsite) => {
                 if (campsite) {
                     req.body.author = req.user._id;
@@ -146,6 +150,7 @@ campsiteRouter
         authenticate.verifyAdmin,
         (req, res, next) => {
             Campsite.findById(req.params.campsiteId)
+                .populate("comments.author")
                 .then((campsite) => {
                     if (campsite) {
                         for (let i = campsite.comments.length - 1; i >= 0; i--) {
@@ -174,6 +179,7 @@ campsiteRouter
     .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
     .get(cors.cors, (req, res, next) => {
         Campsite.findById(req.params.campsiteId)
+            .populate("comments.author")
             .then((campsite) => {
                 if (campsite && campsite.comments.id(req.params.commentId)) {
                     res.statusCode = 200;
@@ -199,6 +205,7 @@ campsiteRouter
     })
     .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Campsite.findById(req.params.campsiteId)
+            .populate("comments.author")
             .then((campsite) => {
                 if (campsite && campsite.comments.id(req.params.commentId)) {
                     const authorId = campsite.comments.id(req.params.commentId).author;
@@ -238,6 +245,7 @@ campsiteRouter
     })
     .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
         Campsite.findById(req.params.campsiteId)
+            .populate("comments.author")
             .then((campsite) => {
                 if (campsite && campsite.comments.id(req.params.commentId)) {
                     const authorId = campsite.comments.id(req.params.commentId).author;
