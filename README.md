@@ -20,18 +20,51 @@ This repository contains projects and coursework from Nucamp's **Full Stack Web 
 
 ### JavaScript Fundamentals, Data Structures & Algorithms
 
+Core JavaScript concepts and problem-solving foundations.
+
+- **Topics:** ES6+, DOM manipulation, events, forms, responsive layout, async (promises), module patterns
+- **Tooling:** Parcel, Bootstrap, Font Awesome
+
 ### Front End JavaScript Library - React
+
+- **Topics:** React 18, hooks, state management with Redux Toolkit, React Router v6, forms with Formik, animations
+- **Tooling:** Create React App, Redux Toolkit, React Router, Reactstrap, Bootstrap, redux-logger
 
 ### Multiplatform Mobile App Development with React Native
 
+- **Topics:** Expo runtime, navigation (stack/tabs/drawer), AsyncStorage, networking, offline/netinfo, notifications, image picker, secure storage
+- **Tooling:** Expo (SDK 44 and 53), React Navigation, Redux Toolkit, Redux Persist, React Native Elements
+
 ### Server-side Development with NodeJS, Express & MongoDB
+
+- **Topics:** Node HTTP module, Express 4/5, routing and middleware (morgan), authentication (passport-local, JWT), sessions, file uploads (multer), MongoDB driver, Mongoose ODM, CORS
+- **Tooling:** Nodemon, Pug templates, cookie-parser, session-file-store, mongoose-currency
 
 ---
 
-## 🎓 Certificate
+## Repository Structure
+
+- `WebDev/` — Frontend exercises and projects (JavaScript, React)
+- `Python/` — Algorithmic thinking and DSA practice (language-agnostic concepts, Python for practice)
+- `json-server/` — Mock API/data for local development and testing
+- `README.md` — You are here
+
+---
+
+## Certificate
 
 [View Certificate on LinkedIn](https://www.linkedin.com/in/elin-simenstad/details/certifications/)
 
 ---
 
-## 🙏 Acknowledgments
+## Contact
+
+**Elin Simenstad**
+LinkedIn: [linkedin.com/in/yourprofile](https://www.linkedin.com/in/elin-simenstad/)  
+GitHub: [@simmi-91](https://github.com/simmi-91/)
+
+---
+
+## Acknowledgments
+
+Thanks to [Nucamp](https://www.nucamp.co/) for providing comprehensive curriculum
